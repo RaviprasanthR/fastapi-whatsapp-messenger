@@ -75,8 +75,8 @@ def send_message(data: PhoneNumberModel):
             "to": data.phone_number,
             "type": "template",
             "template": {
-                "name": "hello_world",
-                "language": {"code": "en_us"}
+                "name": "tmbc",
+                "language": {"code": "en"}
             }
         }
 
