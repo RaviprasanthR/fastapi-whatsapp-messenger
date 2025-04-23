@@ -1,74 +1,84 @@
-#Fastapi-Whatsapp-Messenger
 
-This project demonstrates how to create a FastAPI application that integrates with Meta’s WhatsApp Business Manager API to send messages.
+# FastAPI WhatsApp Bot
 
-## Objective
-Create a FastAPI endpoint `/send_message` that sends the following message to a specified WhatsApp number:
-
-```
-"Hello, this is a test message from our TMBC bot!"
-```
+This FastAPI application allows you to send WhatsApp messages using the WhatsApp Business API. The application accepts a phone number and sends a WhatsApp message using a pre-defined template.
 
 ## Features
-- Accepts phone number as a query parameter
-- Validates phone number format (E.164)
-- Integrates with WhatsApp Business API
-- Provides error handling and clear responses
 
-## Tech Stack
-- Python
+- Send WhatsApp messages using templates.
+- Handle rate limiting with retries using exponential backoff.
+- Simple phone number validation (E.164 format).
+- Logs all requests and responses for better debugging and tracking.
+
+## Requirements
+
+- Python 3.8+
 - FastAPI
-- Pydantic
 - Requests
+- Python Dotenv
 
-## Setup Instructions
+## Setup
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/whatsapp-fastapi.git
-cd whatsapp-fastapi
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/whatsapp-fastapi-bot.git
+   cd whatsapp-fastapi-bot
+   ```
+
+2. Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scriptsctivate`
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set up environment variables:
+   - Create a `.env` file in the root of the project and add the following:
+     ```
+     WHATSAPP_API_VERSION=v17.0
+     WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+     WHATSAPP_ACCESS_TOKEN=your_access_token
+     ```
+
+5. Run the FastAPI app:
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+6. Access the documentation at:
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+## Endpoints
+
+### `POST /send_message`
+
+Sends a WhatsApp message to the specified phone number using a pre-defined template.
+
+#### Request Body
+
+```json
+{
+  "phone_number": "+1234567890"
+}
 ```
 
-### 2. Create Virtual Environment
-```bash
-python3 -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
+#### Response
+
+```json
+{
+  "status": "Message sent successfully",
+  "whatsapp_response": {
+    // Response data from WhatsApp API
+  }
+}
 ```
 
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+## Logging and Error Handling
 
-### 4. Configure Environment Variables
-Replace the placeholders in the main FastAPI file with your actual Meta credentials:
-- `YOUR_PHONE_NUMBER_ID`
-- `YOUR_ACCESS_TOKEN`
+The application logs all incoming requests and responses for better debugging and monitoring. If an error occurs (e.g., invalid phone number, WhatsApp API failure), appropriate error messages are returned.
 
-Alternatively, use environment variables and `os.getenv()`.
-
-### 5. Run the Application
-```bash
-uvicorn main:app --reload
-```
-
-## Usage
-Visit:
-```
-http://127.0.0.1:8000/send_message?phone_number=+12345678900
-```
-Replace `+12345678900` with the actual phone number in E.164 format.
-
-## Example Request
-```bash
-curl "http://127.0.0.1:8000/send_message?phone_number=+12345678900"
-```
-
-## Notes
-- Make sure your WhatsApp Business account is approved and has access to send messages.
-- Ensure the recipient phone number has opted in to receive messages.
-
----
-
-Feel free to contribute or raise issues if you find any bugs!
 
